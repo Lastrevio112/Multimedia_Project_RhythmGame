@@ -1,0 +1,12 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+canvas {
+    border: 2px solid #000;
+}
+
+#scoreDisplay {
+    font-size: 24px;
+    margin-top: 20px;
+}

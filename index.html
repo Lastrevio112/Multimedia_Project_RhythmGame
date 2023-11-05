@@ -8,13 +8,11 @@
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
-    <div id="menu" class="container text-center">
-        <h1>Song Selection</h1>
-        <button class="btn btn-primary" onclick="startGame('song1')">Song 1</button>
-        <button class="btn btn-primary" onclick="startGame('song2')">Song 2</button>
-        <button class="btn btn-primary" onclick="startGame('song3')">Song 3</button>
+    <div class="container text-center">
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <button id="startButton" class="btn btn-primary">Start Game</button>
+        <div id="scoreDisplay">Score: 0</div>
     </div>
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="script.js"></script>

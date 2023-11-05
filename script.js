@@ -6,16 +6,9 @@ const scoreDisplay = document.getElementById("scoreDisplay");
 
 let isGameRunning = false;
 let score = 0;
-let selectedSong = '';
 
 
-// Audio
-const audioPaths = {
-    song1: 'path/to/song1.mp3',
-    song2: 'path/to/song2.mp3',
-    song3: 'path/to/song3.mp3'
-};
-
+const audioPath = 'ENTER HERE AUDIO PATH TO DRAGOSTEA DIN TEI LATER'; //MODIFICATI AICI
 
 // Game Loop
 function gameLoop() {
@@ -28,11 +21,8 @@ function gameLoop() {
 }
 
 
-function startGame(song) {
-    selectedSong = song;
-    document.getElementById('menu').style.display = 'none';
+function startGame() {
     document.getElementById('gameCanvas').style.display = 'block';
-    document.getElementById('backButton').style.display = 'block';
     init();
 }
 
@@ -44,14 +34,6 @@ startButton.addEventListener("click", () => {
         audio.play();
         gameLoop();
     }
-});
-
-document.getElementById('backButton').addEventListener('click', () => {
-    isGameRunning = false;
-    audio.pause();
-    document.getElementById('menu').style.display = 'block';
-    document.getElementById('gameCanvas').style.display = 'none';
-    document.getElementById('backButton').style.display = 'none';
 });
 
 
@@ -66,7 +48,7 @@ canvas.addEventListener("click", () => {
 function init() {
     // Set up game elements
     // Load audio
-    audio.src = audioPaths[selectedSong];
+    audio.src = audioPath;
     audio.load();
     audio.play();
     isGameRunning = true;
@@ -74,5 +56,3 @@ function init() {
 }
 
 
-//FUNCTION CALLS:
-init();

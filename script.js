@@ -2,6 +2,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const startButton = document.getElementById("startButton");
+const restartButton = document.getElementById("restartButton");
 const scoreDisplay = document.getElementById("scoreDisplay");
 
 let isGameRunning = false;
@@ -34,6 +35,11 @@ startButton.addEventListener("click", () => {
         audio.play();
         gameLoop();
     }
+});
+
+restartButton.addEventListener("click", () => {
+    if (confirm("Do you want to restart the game?"))
+        location.reload();
 });
 
 

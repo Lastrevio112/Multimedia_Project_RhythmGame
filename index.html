@@ -8,10 +8,19 @@
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
-    <div class="container text-center">
-        <canvas id="gameCanvas" width="800" height="400"></canvas>
-        <button id="startButton" class="btn btn-primary">Start Game</button>
-        <div id="scoreDisplay">Score: 0</div>
+    <div class="row">
+        <div class="col-md-4 col-2">
+            <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+            <button id="startButton" class="btn btn-primary">Start Game</button>
+            <br> <br>  
+            <button id="restartButton" class="btn btn-primary">Restart Game</button>
+        </div>
+        <div class="col-md-4 col-2">
+            <div id="scoreDisplay">Score: 0</div>
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        <div class="col-md-4 col-2">
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

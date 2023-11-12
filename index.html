@@ -8,13 +8,41 @@
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
-    <div class="container text-center">
-        <canvas id="gameCanvas" width="800" height="400"></canvas>
-        <button id="startButton" class="btn btn-primary">Start Game</button>
-        <div id="scoreDisplay">Score: 0</div>
+    <div class="flex-container text-center">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="title">Dragostea Din Tei - Piano Tiles</h1>
+            </div>
+        </div>
+        <div class="row no-gutters">
+            <!-- Left column for image -->
+            <div class="col"> 
+                <img src="/Multimedia_Project_RhythmGame/Img/img1.jpg" alt="Left Image" class="img-full-stretch">
+            </div>
+            <!-- Middle column for game -->
+            <div class="col"> 
+                <canvas id="gameCanvas" width="300" height="400"></canvas>
+                <button id="startButton" class="btn btn-primary mt-2">Start Game</button>
+                <div id="scoreDisplay">Score: 0</div>
+            </div>
+            <!-- Right column for image -->
+            <div class="col"> 
+                <img src="/Multimedia_Project_RhythmGame/Img/img2.jpg" alt="Right Image" class="img-full-stretch">
+            </div>
+        </div>
+    </div>
+    
+    <div class="cd-container">
+        <img src="/Multimedia_Project_RhythmGame/Img/cd.png" alt="CD Image" class="spinning-cd">
+        <div class="cd-info">
+            <div>Dragostea Din Tei</div>
+            <div>O-Zone</div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
+

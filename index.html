@@ -10,9 +10,12 @@
 <body>
     <div class="row">
         <div class="col-md-4 col-12">
-            <div class="btn-container">
-                <button id="playButton" class="btn btn-primary">Play</button>
-                <button id="restartButton" class="btn btn-primary">Restart</button>
+            <div class="cd-container">
+                <img src="./resources/cd.png" alt="CD Image" class="spinning-cd">
+                <div class="cd-info">
+                    <div>Dragostea Din Tei</div>
+                    <div>O-Zone</div>
+                </div>
             </div>
         </div>
         <div class="col-md-4 col-2">
@@ -21,6 +24,11 @@
                 <div id="timerDisplay">Time: 0</div>
             </div>
                 <canvas id="gameCanvas"></canvas>
+
+                <div class="btn-container">
+                    <button id="playButton" class="btn btn-primary">Play</button>
+                    <button id="restartButton" class="btn btn-primary">Restart</button>
+                </div>
         </div>        
         <div class="col-md-4 col-2">
             <div id="highScoreDisplay">High Score: 0</div>

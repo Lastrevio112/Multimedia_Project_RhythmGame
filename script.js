@@ -1,6 +1,6 @@
 window.onload = function () {
-	alert("Welcome to the Rhythm Tapper Game!\n\nHow to Play:\n- Click the 'Play' button to start the game.\n- Use keys 'A', 'S', 'K', and 'L' to remove tiles in the corresponding rows.\n- Your goal is to tap the falling tiles to the beat of the music.\n- Each successful tap increases your score.\n- If a tile reaches the bottom without being tapped, it's game over.\n- Challenge yourself to achieve the highest score!");
-	
+    alert("Welcome to the Rhythm Tapper Game!\n\nHow to Play:\n- Click the 'Play' button to start the game.\n- Use keys 'A', 'S', 'K', and 'L' to remove tiles in the corresponding rows.\n- Your goal is to tap the falling tiles to the beat of the music.\n- Each successful tap increases your score.\n- If a tile reaches the bottom without being tapped, it's game over.\n- Challenge yourself to achieve the highest score.");
+
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     const playButton = document.getElementById("playButton");
@@ -12,51 +12,38 @@ window.onload = function () {
     let isGamePaused = false;
     let score = 0;
     let tiles = [];
-	
-    // Load high score from local storage
+
     let highScore = localStorage.getItem("highScore") || 0;
     highScoreDisplay.textContent = "High Score: " + highScore;
-	
-    const audioPath = './resources/DragosteaDinTei.mp3';
-    const audio = new Audio(); // Audio object
 
-    // Function to generate a random time between 20 and 60 seconds
+    const audioPath = './resources/DragosteaDinTei.mp3';
+    const audio = new Audio();
+
     function getRandomTime() {
         return Math.floor(Math.random() * (60 - 20 + 1)) + 20;
     }
 
-    // Game Loop
     function gameLoop() {
         if (isGameRunning && !isGamePaused) {
-            // Clear canvas and draw game elements
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Update and draw tiles
             tiles.forEach(tile => {
                 tile.update();
                 tile.draw();
 
-                // Check if tile reached the bottom
                 if (tile.isAtBottom()) {
                     gameOver();
                 }
             });
 
-            // Remove tiles that have reached the bottom
             tiles = tiles.filter(tile => !tile.isAtBottom());
 
-            // Check if a new tile should be added
             if (Math.random() < 0.02) {
                 tiles.push(new Tile());
             }
 
             requestAnimationFrame(gameLoop);
         }
-    }
-
-    function startGame() {
-        document.getElementById('gameCanvas').style.display = 'block';
-        init();
     }
 
     function pauseGame() {
@@ -75,7 +62,6 @@ window.onload = function () {
         isGamePaused = true;
         audio.pause();
 
-        // Update high score if needed
         if (score > highScore) {
             highScore = score;
             localStorage.setItem("highScore", highScore);
@@ -85,13 +71,10 @@ window.onload = function () {
         alert("Game Over! Your score: " + score);
     }
 
-    // Event listener for keydown events
     window.addEventListener("keydown", handleKeyDown);
 
-    // Handle keydown event
     function handleKeyDown(event) {
         if (isGameRunning && !isGamePaused) {
-            // Check the pressed key and remove corresponding tiles
             switch (event.key) {
                 case "a":
                     removeTileFromRow(0);
@@ -111,81 +94,69 @@ window.onload = function () {
         }
     }
 
-    // Function to remove a tile from the specified row
     function removeTileFromRow(row) {
         tiles = tiles.filter(tile => {
             if (Math.floor(tile.x / tile.width) === row && !tile.isAtBottom()) {
-                // Player removed a tile from the correct row
                 score++;
                 scoreDisplay.textContent = "Score: " + score;
-                return false; // Filter out the removed tile
+                return false;
             } else {
-                return true; // Keep tiles that are not in the specified row or have reached the bottom
+                return true;
             }
         });
     }
 
-    // Event Listeners
-    playButton.addEventListener("click", () => {
-        if (!isGameRunning) {
-            // Set a random starting time for the audio
-            audio.currentTime = getRandomTime();
+	playButton.addEventListener("click", () => {
+		if (!isGameRunning) {
+			audio.currentTime = getRandomTime();
 
-            // Listen for the loadedmetadata event to ensure the audio is ready
-            audio.addEventListener("loadedmetadata", () => {
-                console.log("Attempting to play audio at time:", audio.currentTime);
+			audio.addEventListener("loadedmetadata", () => {
+				setTimeout(() => {
+					isGameRunning = true;
+					isGamePaused = false;
+					score = 0;
+					scoreDisplay.textContent = "Score: " + score;
 
+					audio.play()
+						.then(() => {
+							playButton.textContent = "Pause";
+							gameLoop();
+						})
+						.catch(error => console.error("Error starting audio playback:", error));
+				}, 2000);
+			});
+
+			audio.src = audioPath;
+			audio.load();
+		} else {
+			if (isGamePaused) {
+				resumeGame();
+				playButton.textContent = "Pause";
+			} else {
+				pauseGame();
+				playButton.textContent = "Play";
+			}
+		}
+	});
+
+    restartButton.addEventListener("click", () => {
+        if (confirm("Do you want to restart the game?")) {
+            setTimeout(() => {
                 isGameRunning = true;
                 isGamePaused = false;
                 score = 0;
                 scoreDisplay.textContent = "Score: " + score;
 
-                audio.play()
-                    .then(() => {
-                        console.log("Audio playback started");
-                        playButton.textContent = "Pause";
-                        gameLoop();
-                    })
-                    .catch(error => console.error("Error starting audio playback:", error));
-            });
+                highScoreDisplay.textContent = "High Score: " + highScore;
 
-            // Load the audio
-            audio.src = audioPath;
-            audio.load();
-        } else {
-            if (isGamePaused) {
-                resumeGame();
-                playButton.textContent = "Pause";
-            } else {
-                pauseGame();
-                playButton.textContent = "Play";
-            }
+                tiles = [];
+
+                gameLoop();
+            }, 2000);
         }
     });
 
-    restartButton.addEventListener("click", () => {
-        if (confirm("Do you want to restart the game?")) {
-            // Reset game variables
-            isGameRunning = true;
-            isGamePaused = false;
-            score = 0;
-            scoreDisplay.textContent = "Score: " + score;
-
-            // Clear high score display
-            highScoreDisplay.textContent = "High Score: " + highScore;
-
-            // Reset tiles array
-            tiles = [];
-
-            // Start the game loop
-            gameLoop();
-        }
-    });
-
-    // Initialize game
     function init() {
-        // Set up game elements
-        // Load audio
         audio.src = audioPath;
         audio.load();
         isGameRunning = true;
@@ -193,7 +164,6 @@ window.onload = function () {
         gameLoop();
     }
 
-    // Tile class
     class Tile {
         constructor() {
             this.width = canvas.width / 4;

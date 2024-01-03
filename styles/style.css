@@ -1,27 +1,27 @@
 body {
     font-family: 'Times New Roman', Times, serif;
     background-color: #353535;
-    margin: 0; /* Remove default margin to ensure full width */
+    margin: 0;
     background-image: url(../resources/backgroundPhotoOzone.jpg);
     background-size: 50%;
 }
 
-.btn-primary{
+.btn-primary {
     margin-left: 1%;
     margin-top: 1%;
     background-color: #333333;
     border: 1px solid white;
     width: 100px;
     height: 50px;
-    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
     background-color: #111111;
     border: 1px solid white;
 }
 
-.btn-container{
+.btn-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,8 +31,8 @@ body {
 #gameCanvas {
     width: 100%;
     height: 160%;
-    text-align:center;
- }
+    text-align: center;
+}
 
 canvas {
     border: 1px solid white;
@@ -48,8 +48,7 @@ canvas {
     text-shadow: -2px 0 1px black, 0 2px 1px black, 2px 0 1px black, 0 -2px 1px black;
 }
 
-#scoreDisplay,
-#timerDisplay {
+#scoreDisplay {
     font-size: 20px;
     color: white;
     text-align: center;
@@ -75,22 +74,20 @@ canvas {
     left: 10px;
     text-align: center;
     color: white;
-    z-index: 1000; 
+    z-index: 1000;
     text-shadow: -2px 0 1px black, 0 2px 1px black, 2px 0 1px black, 0 -2px 1px black;
 }
 
 /* Style for the spinning CD */
 .spinning-cd {
-    animation: spin 6s linear infinite; 
+    animation: spin 6s linear infinite;
     height: auto;
     width: 80px;
 }
 
-
-
 /* Style for the song and band name text */
 .cd-info div {
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 /* Keyframes for the spinning effect */

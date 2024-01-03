@@ -4,11 +4,13 @@ window.onload = function () {
     const playButton = document.getElementById("playButton");
     const restartButton = document.getElementById("restartButton");
     const scoreDisplay = document.getElementById("scoreDisplay");
+    const highScoreDisplay = document.getElementById("highScoreDisplay");
 
     let isGameRunning = false;
     let isGamePaused = false;
     let score = 0;
     let tiles = [];
+    let highScore = localStorage.getItem("highScore") || 0;
 
     const audioPath = './resources/DragosteaDinTei.mp3';
     const audio = new Audio(); // Audio object
@@ -67,6 +69,14 @@ window.onload = function () {
         isGameRunning = false;
         isGamePaused = true;
         audio.pause();
+
+        // Update high score if needed
+        if (score > highScore) {
+            highScore = score;
+            localStorage.setItem("highScore", highScore);
+            highScoreDisplay.textContent = "High Score: " + highScore;
+        }
+
         alert("Game Over! Your score: " + score);
     }
 
@@ -122,6 +132,9 @@ window.onload = function () {
 
                 isGameRunning = true;
                 isGamePaused = false;
+                score = 0;
+                scoreDisplay.textContent = "Score: " + score;
+
                 audio.play()
                     .then(() => {
                         console.log("Audio playback started");

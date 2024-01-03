@@ -1,4 +1,6 @@
 window.onload = function () {
+	alert("Welcome to the Rhythm Tapper Game!\n\nHow to Play:\n- Click the 'Play' button to start the game.\n- Use keys 'A', 'S', 'K', and 'L' to remove tiles in the corresponding rows.\n- Your goal is to tap the falling tiles to the beat of the music.\n- Each successful tap increases your score.\n- If a tile reaches the bottom without being tapped, it's game over.\n- Challenge yourself to achieve the highest score!");
+	
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     const playButton = document.getElementById("playButton");
@@ -10,14 +12,17 @@ window.onload = function () {
     let isGamePaused = false;
     let score = 0;
     let tiles = [];
+	
+    // Load high score from local storage
     let highScore = localStorage.getItem("highScore") || 0;
-
+    highScoreDisplay.textContent = "High Score: " + highScore;
+	
     const audioPath = './resources/DragosteaDinTei.mp3';
     const audio = new Audio(); // Audio object
 
-    // Function to generate a random time between 30 and 90 seconds
+    // Function to generate a random time between 20 and 60 seconds
     function getRandomTime() {
-        return Math.floor(Math.random() * (90 - 30 + 1)) + 30;
+        return Math.floor(Math.random() * (60 - 20 + 1)) + 20;
     }
 
     // Game Loop
@@ -160,7 +165,20 @@ window.onload = function () {
 
     restartButton.addEventListener("click", () => {
         if (confirm("Do you want to restart the game?")) {
-            location.reload();
+            // Reset game variables
+            isGameRunning = true;
+            isGamePaused = false;
+            score = 0;
+            scoreDisplay.textContent = "Score: " + score;
+
+            // Clear high score display
+            highScoreDisplay.textContent = "High Score: " + highScore;
+
+            // Reset tiles array
+            tiles = [];
+
+            // Start the game loop
+            gameLoop();
         }
     });
 

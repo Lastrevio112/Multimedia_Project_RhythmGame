@@ -23,28 +23,40 @@ window.onload = function () {
         return Math.floor(Math.random() * (60 - 20 + 1)) + 20;
     }
 
-    function gameLoop() {
-        if (isGameRunning && !isGamePaused) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+	function gameLoop() {
+		if (isGameRunning && !isGamePaused) {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            tiles.forEach(tile => {
-                tile.update();
-                tile.draw();
+			tiles.forEach(tile => {
+				tile.update();
+				tile.draw();
 
-                if (tile.isAtBottom()) {
-                    gameOver();
-                }
-            });
+				if (tile.isAtBottom()) {
+					gameOver();
+				}
+			});
 
-            tiles = tiles.filter(tile => !tile.isAtBottom());
+			tiles = tiles.filter(tile => !tile.isAtBottom());
 
-            if (Math.random() < 0.02) {
-                tiles.push(new Tile());
-            }
+			const columnOccupied = [false, false, false, false];
+			tiles.forEach(tile => {
+				const column = Math.floor(tile.x / tile.width);
+				columnOccupied[column] = true;
+			});
 
-            requestAnimationFrame(gameLoop);
-        }
-    }
+			const numberOfTiles = tiles.length;
+
+			if (numberOfTiles === 0) {
+				tiles.push(new Tile());
+			}
+
+			if (Math.random() < 0.01 && !columnOccupied.every(occupied => occupied) && numberOfTiles < 4) {
+				tiles.push(new Tile());
+			}
+
+			requestAnimationFrame(gameLoop);
+		}
+	}
 
     function pauseGame() {
         isGamePaused = true;
@@ -94,17 +106,27 @@ window.onload = function () {
         }
     }
 
-    function removeTileFromRow(row) {
-        tiles = tiles.filter(tile => {
-            if (Math.floor(tile.x / tile.width) === row && !tile.isAtBottom()) {
-                score++;
-                scoreDisplay.textContent = "Score: " + score;
-                return false;
-            } else {
-                return true;
-            }
-        });
+function removeTileFromRow(row) {
+    let lastTileIndex = -1;
+    let maxY = -1;
+
+    for (let i = 0; i < tiles.length; i++) {
+        const tile = tiles[i];
+        const tileRow = Math.floor(tile.x / tile.width);
+
+        if (tileRow === row && tile.y > maxY && !tile.isAtBottom()) {
+            maxY = tile.y;
+            lastTileIndex = i;
+        }
     }
+
+    if (lastTileIndex !== -1) {
+        const removedTile = tiles.splice(lastTileIndex, 1)[0];
+        score++;
+        scoreDisplay.textContent = "Score: " + score;
+    }
+}
+
 
 	playButton.addEventListener("click", () => {
 		if (!isGameRunning) {
@@ -164,26 +186,37 @@ window.onload = function () {
         gameLoop();
     }
 
-    class Tile {
-        constructor() {
-            this.width = canvas.width / 4;
-            this.height = 50;
-            this.x = Math.floor(Math.random() * 4) * this.width;
-            this.y = -this.height;
-            this.speed = 3;
-        }
+	class Tile {
+		constructor() {
+			this.width = canvas.width / 4;
+			this.height = 50;
+			this.x = Math.floor(Math.random() * 4) * this.width;
+			this.y = -this.height;
+			this.speed = 2;
+		}
 
-        update() {
-            this.y += this.speed;
-        }
+		update() {
+			this.y += this.speed;
+		}
 
-        draw() {
-            ctx.fillStyle = "black";
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }
+		draw() {
+			ctx.fillStyle = "black";
+			ctx.fillRect(this.x, this.y, this.width, this.height);
 
-        isAtBottom() {
-            return this.y + this.height >= canvas.height;
-        }
-    }
+			ctx.strokeStyle = "gray";
+			ctx.lineWidth = 2;
+
+			for (let i = 1; i < 4; i++) {
+				const dividerX = i * (canvas.width / 4);
+				ctx.beginPath();
+				ctx.moveTo(dividerX, 0);
+				ctx.lineTo(dividerX, canvas.height);
+				ctx.stroke();
+			}
+		}
+
+		isAtBottom() {
+			return this.y + this.height >= canvas.height;
+		}
+	}
 };
